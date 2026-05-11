@@ -7,9 +7,16 @@ if ROOT_DIR not in sys.path:
 
 from src.exception import CustomException
 from src.logger import get_logger
+from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+
+
+
+
+
 
 @dataclass
 class DataIngestionConfig:
@@ -54,3 +61,11 @@ if __name__ == "__main__":
     ingestion = DataIngestion()
     train_path, test_path = ingestion.initiate_data_ingestion()
     print(f"Created: {train_path} and {test_path}")
+
+    data_transformation = DataTransformation()
+    train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_path, test_path)
+    print("Data transformation completed")
+
+    model_trainer = ModelTrainer()
+    trained_model = model_trainer.initiate_model_trainer(train_arr, test_arr)
+    print(f"Model training completed: {trained_model}")
